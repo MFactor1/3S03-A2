@@ -14,12 +14,14 @@ public class MinTest {
 
 	private static Stream<Arguments> IntegerTestArgs() {
 		return Stream.of(
-			Arguments.of(2,1,3,1),
-			Arguments.of(-1,-2,-3,-3),
-			Arguments.of(-1,0,1,-1),
-			Arguments.of(1,1,1,1),
-			Arguments.of(-1,-1,-1,-1),
-			Arguments.of(0,0,0,0)
+			Arguments.of(2,1,3,1), // Test positive normal case
+			Arguments.of(-1,-2,-3,-3), // Test negative normal case
+			Arguments.of(-1,0,1,-1), // Test pos/neg boundary
+			Arguments.of(Integer.MAX_VALUE, 99999, 12345, 12345), // Test max int boundary
+			Arguments.of(Integer.MIN_VALUE, 0, -12345, Integer.MIN_VALUE), // Test min int boundary
+			Arguments.of(1,1,1,1), // Test positive all same
+			Arguments.of(-1,-1,-1,-1), // Test negative all same
+			Arguments.of(0,0,0,0) // Test zero all same
 		);
 	}
 
@@ -35,10 +37,10 @@ public class MinTest {
 
 	private static Stream<Arguments> CharTestArgs() {
 		return Stream.of(
-			Arguments.of('b','a','c','a'),
-			Arguments.of('b','a','C','C'),
-			Arguments.of('a','a','a','a'),
-			Arguments.of('2','1','3','1')
+			Arguments.of('b','a','c','a'), // Test base lower case
+			Arguments.of('b','a','C','C'), // Test lower + upper case
+			Arguments.of('a','a','a','a'), // Test all same
+			Arguments.of('2','1','3','1') // Test integers as chars
 		);
 	}
 
@@ -54,12 +56,13 @@ public class MinTest {
 
 	private static Stream<Arguments> StringTestArgs() {
 		return Stream.of(
-			Arguments.of("ab","aa","ac","aa"),
-			Arguments.of("aB","aa","ac","aB"),
-			Arguments.of("aaa","aa","a","a"),
-			Arguments.of("2","1","3","1"),
-			Arguments.of("-1","-2","-3","-1"),
-			Arguments.of("-1","0","1","-1")
+			Arguments.of("b","a","c","a"), // Test base case
+			Arguments.of("ab","aa","ac","aa"), // Test multi-character
+			Arguments.of("aB","aa","ac","aB"), // Test multi-character with upper case
+			Arguments.of("aaa","aa","a","a"), // Test string length-based min
+			Arguments.of("2","1","3","1"), // Test integers as strings
+			Arguments.of("-1","-2","-3","-1") // Test special characters as negative integers
+											  // (note: -1 is min here since ascii(-) + ascii(1) < ascii(-) + ascii(3))
 		);
 	}
 
@@ -74,21 +77,21 @@ public class MinTest {
 	}
 
 	@Test
-	public void SingleIntTest() {
+	public void SingleIntTest() { // Test a single integer
 		List<Integer> testList = new ArrayList<>();
 		testList.add(2);
 		assertEquals(Min.min(testList), 2);
 	}
 
 	@Test
-	public void SingleCharTest() {
+	public void SingleCharTest() { // Test a single char
 		List<Character> testList = new ArrayList<>();
 		testList.add('b');
 		assertEquals(Min.min(testList), 'b');
 	}
 
 	@Test
-	public void SingleStringTest() {
+	public void SingleStringTest() { // Test a single string
 		List<String> testList = new ArrayList<>();
 		testList.add("test");
 		assertEquals(Min.min(testList), "test");
